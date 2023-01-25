@@ -109,7 +109,13 @@ class StudentsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Delete payments first
+        PaymentControl::where('student_id', $id)->delete();
+
+        $student = Student::find($id);
+        $student->delete();
+
+        return ApiResponseController::response('Estudiante eliminado con exito', 200);
     }
 
     public function registerPayment(Request $request, $id)
@@ -143,4 +149,6 @@ class StudentsController extends Controller
 
         return ApiResponseController::response('Consulta exitosa', 200, $payments);
     }
+
+
 }

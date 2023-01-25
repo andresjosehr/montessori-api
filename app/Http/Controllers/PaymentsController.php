@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\MonthControl;
+use App\Models\PaymentControl;
 use App\Models\PriceHistory;
 use Illuminate\Http\Request;
 
@@ -35,5 +36,17 @@ class PaymentsController extends Controller
         $price = PriceHistory::orderBy('created_at', 'desc')->first()->price;
 
         return ApiResponseController::response('Consulta exitosa', 200, $price);
+    }
+
+    public function destroy($id)
+    {
+        $paymentControl = PaymentControl::find($id);
+
+        if ($paymentControl) {
+            $paymentControl->delete();
+            return ApiResponseController::response('Eliminado exitosamente', 200);
+        } else {
+            return ApiResponseController::response('No encontrado', 404);
+        }
     }
 }

@@ -169,17 +169,6 @@ class UsersController extends Controller
         return ApiResponseController::response('Usuario actualizado con exito', 200, $user);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
-
 
     public function completeSignUp(Request $request, $token)
     {
@@ -221,5 +210,16 @@ class UsersController extends Controller
 		$usuario->notify(new \App\Notifications\MailCreateAccount($token, $usuario->email, $rolName));
 
 		return ApiResponseController::response('Correo enviado exitosamente', 200);
+    }
+
+    public function destroy($id)
+    {
+        if(!$user = User::find($id)){
+            return ApiResponseController::response('', 204);
+        }
+
+        $user->delete();
+
+        return ApiResponseController::response('Usuario eliminado con exito', 200);
     }
 }
