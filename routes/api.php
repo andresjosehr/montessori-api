@@ -55,7 +55,9 @@ Route::group(['middleware' => ['api_access']], function () use ($basePathControl
 Route::post('payment-control/update-month-price', $basePathController.'PaymentsController@updateMonthPrice');
 Route::get('payment-control/get-years', $basePathController.'PaymentsController@getYears');
 Route::get('payment-control/get-month-price', $basePathController.'PaymentsController@getMonthPrice');
+Route::get('payment-control/get-payments-summary-by-year/{year}', $basePathController.'PaymentsController@getPaymentsSummaryByYear');
 Route::delete('payment-control/{id}', $basePathController.'PaymentsController@destroy');
+Route::get('payment-control/get-payments-by-month/{year}/{month}', $basePathController.'PaymentsController@getPaymentByMonth');
 
 Route::post('users/complete-signup/{token}', $basePathController.'UsersController@completeSignUp');
 

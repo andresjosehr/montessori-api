@@ -13,4 +13,9 @@ class Student extends Model
     {
         return $this->belongsTo(Level::class);
     }
+
+    public function payments()
+    {
+        return $this->hasMany(PaymentControl::class);
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\MonthControl;
 use App\Models\PaymentControl;
 use App\Models\PriceHistory;
+use App\Models\Student;
 use Illuminate\Http\Request;
 
 class PaymentsController extends Controller
@@ -48,5 +49,34 @@ class PaymentsController extends Controller
         } else {
             return ApiResponseController::response('No encontrado', 404);
         }
+    }
+
+    public function getPaymentsSummaryByYear(Request $request, $year)
+    {
+        $payments = PaymentControl::where('year', $year)->get();
+        $students = \DB::table('students')->get();
+        $currentMothPrice = PriceHistory::orderBy('created_at', 'desc')->first()->price;
+
+        $data = [];
+        for ($i=0; $i < 12; $i++) {
+            $data[$i] = [
+                'month' => $i + 1,
+                'abonated' => $payments->where('month', $i + 1)->sum('usd_amount'),
+                'debt' => $students->count() * $currentMothPrice - $payments->where('month', $i + 1)->sum('usd_amount'),
+                'debtor_students' => $students->count() - $payments->where('month', $i + 1)->groupBy('student_id')->count(),
+            ];
+        }
+
+        return ApiResponseController::response('Consulta exitosa', 200, $data);
+    }
+
+    public function getPaymentByMonth(Request $request, $year, $month)
+    {
+        // Filter students payments by month and year
+        $students = Student::with(['payments' => function ($query) use ($year, $month) {
+            $query->where('year', $year)->where('month', $month);
+        }])->get();
+
+        return ApiResponseController::response('Consulta exitosa', 200, $students);
     }
 }
