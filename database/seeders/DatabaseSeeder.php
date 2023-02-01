@@ -20,6 +20,5 @@ class DatabaseSeeder extends Seeder
         $this->call(ModuleRoleSeeder::class);
         $this->call(LevelsSeeder::class);
         $this->call(MonthControlsSeeder::class);
-        $this->call(SystemConfigSeeder::class);
     }
 }

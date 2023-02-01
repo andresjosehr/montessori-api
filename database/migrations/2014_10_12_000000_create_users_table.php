@@ -20,8 +20,6 @@ return new class extends Migration
             $table->string('email');
             $table->string('phone')->nullable();
             $table->string('password')->nullable();
-            $table->bigInteger('broker_id')->unsigned()->nullable();
-			$table->foreign('broker_id')->references('id')->on('brokers');
             $table->bigInteger('role_id')->unsigned()->nullable();
 			$table->foreign('role_id')->references('id')->on('roles');
             $table->string('img')->nullable();

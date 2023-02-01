@@ -138,9 +138,44 @@ class StudentsController extends Controller
         $paymentControl->payment_date     = $date;
         $paymentControl->payer_type       = $request->payer_type;
         $paymentControl->reference_number = $request->reference_number;
+        $paymentControl->payment_type     = "Mensualidad";
         $paymentControl->save();
 
         return ApiResponseController::response('Pago registrado con exito', 200, $paymentControl);
+    }
+
+    public function registerEnrollmentPayment(Request $request, $id)
+    {
+
+        $bcv = ProceduresController::getDolarBCV();
+
+        $date = explode('T', $request->payment_date)[0];
+
+        if(!$paymentControl = PaymentControl::where('student_id', $id)->where('payment_type', 'Inscripción')->first()){
+            $paymentControl = new PaymentControl();
+        }
+        $paymentControl->student_id       = $id;
+        $paymentControl->year             = date('Y');
+        $paymentControl->ves_amount       = $request->ves_amount;
+        $paymentControl->usd_amount       = $request->usd_amount;
+        $paymentControl->bcv_price        = $bcv;
+        $paymentControl->full_name        = $request->full_name;
+        $paymentControl->document         = $request->document;
+        $paymentControl->payment_method   = $request->payment_method;
+        $paymentControl->payment_date     = $date;
+        $paymentControl->payer_type       = $request->payer_type;
+        $paymentControl->reference_number = $request->reference_number;
+        $paymentControl->payment_type     = "Inscripción";
+        $paymentControl->save();
+
+        return ApiResponseController::response('Pago registrado con exito', 200, $paymentControl);
+    }
+
+    public function getEnrollmentPayment(Request $request)
+    {
+        $payments = PaymentControl::where('payment_type', 'Inscripción')->first();
+
+        return ApiResponseController::response('Consulta exitosa', 200, $payments);
     }
 
     public function getPaymentControl(Request $request, $studentID, $year)

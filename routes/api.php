@@ -45,7 +45,9 @@ Route::group(['middleware' => ['api_access']], function () use ($basePathControl
     Route::get('users/resend-signup-email/{id}', $basePathController.'UsersController@resendSignUpEmail');
     Route::resource('users', $basePathController.'UsersController');
     Route::post('students/register-payment/{id}', $basePathController.'StudentsController@registerPayment');
+    Route::post('students/register-enrollment-payment/{id}', $basePathController.'StudentsController@registerEnrollmentPayment');
     Route::get('students/payment-control/{studentID}/{year}', $basePathController.'StudentsController@getPaymentControl');
+    Route::get('students/get-enrollment-payment/{studentID}', $basePathController.'StudentsController@getEnrollmentPayment');
     Route::resource('students', $basePathController.'StudentsController');
 
     Route::get('get-all-levels', $basePathController.'LevelsController@getAll');
@@ -58,6 +60,8 @@ Route::get('payment-control/get-month-price', $basePathController.'PaymentsContr
 Route::get('payment-control/get-payments-summary-by-year/{year}', $basePathController.'PaymentsController@getPaymentsSummaryByYear');
 Route::delete('payment-control/{id}', $basePathController.'PaymentsController@destroy');
 Route::get('payment-control/get-payments-by-month/{year}/{month}', $basePathController.'PaymentsController@getPaymentByMonth');
+Route::post('save-enrollment-fee', $basePathController.'PaymentsController@saveEnrollmentFee');
+Route::get('get-enrollment-fees', $basePathController.'PaymentsController@getEnrollmentFees');
 
 Route::post('users/complete-signup/{token}', $basePathController.'UsersController@completeSignUp');
 

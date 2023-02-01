@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EnrollmentFee;
 use App\Models\MonthControl;
 use App\Models\PaymentControl;
 use App\Models\PriceHistory;
@@ -12,7 +13,6 @@ class PaymentsController extends Controller
 {
     public function updateMonthPrice(Request $request)
     {
-        $config = \DB::table('system_config')->where('name', 'price_per_month')->update(['value' => $request->price]);
 
         // Replace comma with dot and convert to float
         $requestPrice = floatval(str_replace(',', '.', $request->price));
@@ -78,5 +78,33 @@ class PaymentsController extends Controller
         }])->get();
 
         return ApiResponseController::response('Consulta exitosa', 200, $students);
+    }
+
+    public function saveEnrollmentFee(Request $request)
+    {
+        $request->validate([
+            'year'       => 'required|integer',
+            'amount_usd' => 'required|integer',
+        ]);
+
+        if($enrEnrollmentFee = EnrollmentFee::where('year', $request->year)->first()){
+            $enrEnrollmentFee->amount_usd = $request->amount_usd;
+            $enrEnrollmentFee->save();
+        } else {
+            $enrollmentFee = new EnrollmentFee();
+            $enrollmentFee->year = $request->year;
+            $enrollmentFee->amount_usd = $request->amount_usd;
+            $enrollmentFee->save();
+        }
+
+
+        return ApiResponseController::response('Guardado exitosamente', 200);
+    }
+
+    public function getEnrollmentFees()
+    {
+        $enrollmentFees = EnrollmentFee::all();
+
+        return ApiResponseController::response('Consulta exitosa', 200, $enrollmentFees);
     }
 }

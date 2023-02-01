@@ -13,10 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('system_config', function (Blueprint $table) {
+        Schema::create('enrollment_fees', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('value');
+            $table->integer('year');
+            $table->float('amount_usd');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('system_configs');
+        Schema::dropIfExists('enrollment_fees');
     }
 };

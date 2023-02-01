@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->bigInteger('student_id')->unsigned()->nullable();
 			$table->foreign('student_id')->references('id')->on('students');
-            $table->integer('month');
+            $table->integer('month')->nullable();
             $table->integer('year');
             $table->float('ves_amount');
             $table->float('usd_amount');
@@ -28,6 +28,7 @@ return new class extends Migration
             $table->date('payment_date');
             $table->string('reference_number')->nullable();
             $table->string('payer_type');
+            $table->string('payment_type');
             $table->timestamps();
         });
     }
