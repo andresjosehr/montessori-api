@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('representative_phone');
             $table->bigInteger('level_id')->unsigned()->nullable();
 			$table->foreign('level_id')->references('id')->on('levels');
-            $table->string('document');
+            $table->string('document')->nullable();
             $table->timestamps();
         });
     }

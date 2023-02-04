@@ -58,6 +58,7 @@ class StudentsController extends Controller
         $student->representative_name  = $request->representative_name;
         $student->representative_phone = $request->representative_phone;
         $student->level_id             = $request->level_id;
+        $student->document             = $request->document;
         $student->save();
 
         return ApiResponseController::response('Usuario creado con exito', 200, $student);
