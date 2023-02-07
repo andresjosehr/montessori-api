@@ -74,11 +74,9 @@ class UsersController extends Controller
         $user             = new User();
         $user->first_name = $request->first_name;
         $user->last_name  = $request->last_name;
-        $user->broker_id  = $request->broker_id;
         $user->email      = $request->email;
         $user->img        = $imgName;
         $user->phone      = $request->phone;
-        $user->verified   = $request->verified === 'true' ? true : false;
         $user->role_id    = $request->role_id;
 
         $user->save();
@@ -158,10 +156,8 @@ class UsersController extends Controller
 
         $user->first_name = $request->first_name;
         $user->last_name  = $request->last_name;
-        $user->broker_id = $request->broker_id === 'null' ? null : $request->broker_id;
         $user->email     = $request->email;
         $user->phone     = $request->phone;
-        $user->verified  = $request->verified === 'true' ? true : false;
         $user->role_id   = $request->role_id;
 
         $user->save();
@@ -221,5 +217,12 @@ class UsersController extends Controller
         $user->delete();
 
         return ApiResponseController::response('Usuario eliminado con exito', 200);
+    }
+
+    public function getAllRoles()
+    {
+        $roles = Role::all();
+
+        return ApiResponseController::response('Consulta exitosa', 200, $roles);
     }
 }

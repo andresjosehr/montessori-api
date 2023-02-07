@@ -35,7 +35,7 @@ Route::prefix('auth')->group(function () use ($basePathController) {
 
 
 Route::get('get-countries', $basePathController.'CountriesController@index');
-Route::get('get-all-roles', $basePathController.'EntityPropertiesController@getAllRoles');
+Route::get('get-all-roles', $basePathController.'UsersController@getAllRoles');
 
 Route::get('test', $basePathController.'TestController@index');
 

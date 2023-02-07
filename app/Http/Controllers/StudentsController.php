@@ -20,13 +20,15 @@ class StudentsController extends Controller
 
         $perPage = $request->input('perPage') ? $request->input('perPage') : 10;
 
-        $queryString = $request->input('queryString') ? $request->input('queryString') : '';
+        $searchString = $request->input('searchString') ? $request->input('searchString') : '';
+        $searchString = $request->input('searchString') != 'null' ? $request->input('searchString') : '';
 		$users = Student::with('level')
-        ->when($queryString, function($q) use ($queryString) {
-            $q->where('name', $queryString)
-            ->orWhere('last_name', $queryString)
-            ->orWhere('representative_name', $queryString)
-            ->orWhere('representative_phone', $queryString);
+        ->when($searchString, function($q) use ($searchString) {
+            $q->where('name', $searchString)
+            ->orWhere('last_name', $searchString)
+            ->orWhere('representative_name', $searchString)
+            ->orWhere('representative_phone', $searchString)
+            ->orWhere('representative_phone', $searchString);
         })
         ->paginate($perPage);
 
@@ -99,7 +101,22 @@ class StudentsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $student                       = Student::find($id);
+
+        if(!$student){
+            return ApiResponseController::response('Estudiante no encontrado', 404);
+        }
+
+        $student->name                 = $request->name;
+        $student->last_name            = $request->last_name;
+        $student->representative_name  = $request->representative_name;
+        $student->representative_phone = $request->representative_phone;
+        $student->level_id             = $request->level_id;
+        $student->document             = $request->document;
+        $student->save();
+
+        return ApiResponseController::response('Usuario actualizado con exito', 200, $student);
     }
 
     /**
